@@ -22,9 +22,6 @@ DiabetesTrack, diyabet hastalarının takibi ve tedavisi için geliştirilmiş k
 
 ### 📥 Kurulum
 1. 📂 Projeyi bilgisayarınıza indirin
-   ```bash
-   git clone https://github.com/kullaniciadi/diabetestrack.git
-   ```
 2. 🗄️ PostgreSQL veritabanını kurun ve bağlantı ayarlarını yapılandırın
    - Veritabanı adı: `diabetesdb`
    - Kullanıcı adı ve şifrenizi `Dbconnection` dosyasında güncelleyin
