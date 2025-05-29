@@ -1,0 +1,116 @@
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\wpf prolab.exe.config
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\wpf prolab.exe
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\wpf prolab.pdb
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\BCrypt.Net-Next.dll
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\Npgsql.dll
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\System.Buffers.dll
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\System.Memory.dll
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\System.Text.Encodings.Web.dll
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\System.Text.Json.dll
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\System.Threading.Channels.dll
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\System.ValueTuple.dll
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\BCrypt.Net-Next.xml
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\Npgsql.xml
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\System.Buffers.xml
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\System.Memory.xml
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\System.Text.Encodings.Web.xml
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\System.Text.Json.xml
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\System.Threading.Channels.xml
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\System.ValueTuple.xml
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\wpf prolab.csproj.AssemblyReference.cache
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\MainWindow.g.cs
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\UI\DoctorDashboard.g.cs
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\UI\LoginWindow.g.cs
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\App.g.cs
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\wpf prolab_MarkupCompile.cache
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\wpf prolab_MarkupCompile.lref
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\MainWindow.baml
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\UI\DoctorDashboard.baml
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\UI\LoginWindow.baml
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\wpf prolab.g.resources
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\wpf_prolab.Properties.Resources.resources
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\wpf prolab.csproj.GenerateResource.cache
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\wpf prolab.csproj.CoreCompileInputs.cache
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\wpf prolab.csproj.Up2Date
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\wpf prolab.exe
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\wpf prolab.pdb
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\LiveCharts.dll
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\LiveCharts.Wpf.dll
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\LiveCharts.pdb
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\LiveCharts.xml
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\LiveCharts.Wpf.pdb
+C:\Users\cucin\Desktop\wpf prolab\bin\Debug\LiveCharts.Wpf.xml
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\UI\AddMeasurementWindow.g.cs
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\UI\AddPatientWindow.g.cs
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\UI\AddMeasurementWindow.baml
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\UI\AddPatientWindow.baml
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\UI\PatientDashboard.baml
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\UI\PatientDashboard.g.cs
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\UI\ChangePasswordWindow.baml
+C:\Users\cucin\Desktop\wpf prolab\obj\Debug\UI\ChangePasswordWindow.g.cs
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\wpf prolab.exe.config
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\wpf prolab.exe
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\wpf prolab.pdb
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\BCrypt.Net-Next.dll
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\LiveCharts.dll
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\LiveCharts.Wpf.dll
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\Npgsql.dll
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\System.Buffers.dll
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\System.Memory.dll
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\System.Text.Encodings.Web.dll
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\System.Text.Json.dll
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\System.Threading.Channels.dll
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\System.ValueTuple.dll
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\BCrypt.Net-Next.xml
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\LiveCharts.pdb
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\LiveCharts.xml
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\LiveCharts.Wpf.pdb
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\LiveCharts.Wpf.xml
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\Npgsql.xml
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\System.Buffers.xml
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\System.Memory.xml
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\System.Text.Encodings.Web.xml
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\System.Text.Json.xml
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\System.Threading.Channels.xml
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\cucin\Desktop\230201128_230201126\bin\Debug\System.ValueTuple.xml
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\wpf prolab.csproj.AssemblyReference.cache
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\UI\ChangePasswordWindow.baml
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\MainWindow.g.cs
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\UI\AddMeasurementWindow.g.cs
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\UI\AddPatientWindow.g.cs
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\UI\ChangePasswordWindow.g.cs
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\UI\DoctorDashboard.g.cs
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\UI\LoginWindow.g.cs
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\UI\PatientDashboard.g.cs
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\App.g.cs
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\wpf prolab_MarkupCompile.cache
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\wpf prolab_MarkupCompile.lref
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\MainWindow.baml
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\UI\AddMeasurementWindow.baml
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\UI\AddPatientWindow.baml
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\UI\DoctorDashboard.baml
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\UI\LoginWindow.baml
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\UI\PatientDashboard.baml
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\wpf prolab.g.resources
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\wpf_prolab.Properties.Resources.resources
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\wpf prolab.csproj.GenerateResource.cache
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\wpf prolab.csproj.CoreCompileInputs.cache
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\wpf prolab.csproj.Up2Date
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\wpf prolab.exe
+C:\Users\cucin\Desktop\230201128_230201126\obj\Debug\wpf prolab.pdb

@@ -1,0 +1,929 @@
+<Window x:Class="wpf_prolab.UI.DoctorDashboard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:wpf_prolab.UI"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        mc:Ignorable="d"
+        Title="Diyabet Takip Sistemi - Doktor Paneli" Height="700" Width="1100"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <!-- Converters -->
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        
+        <!-- Common styles -->
+        <Style TargetType="TextBlock" x:Key="HeaderText">
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#2196F3"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="SubHeaderText">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#555555"/>
+            <Setter Property="Margin" Value="0,10,0,5"/>
+        </Style>
+        <Style TargetType="Button" x:Key="ActionButton">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header Panel -->
+        <Border Grid.Row="0" Background="#2196F3" Padding="20,15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <TextBlock Text="Diyabet Takip Sistemi" FontSize="22" FontWeight="Bold" Foreground="White"/>
+                    <TextBlock Text="Doktor Paneli" FontSize="16" Foreground="White" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <TextBlock x:Name="txtDoctorName" Text="Dr. Ad Soyad" Foreground="White" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                    <Button x:Name="btnLogout" Content="Çıkış" Background="Transparent" BorderThickness="1" BorderBrush="White" 
+                            Foreground="White" Padding="10,5" Click="btnLogout_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Sidebar (Patient List) -->
+            <Border Grid.Column="0" Background="#F5F5F5" BorderThickness="0,0,1,0" BorderBrush="#DDDDDD">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Search Box -->
+                    <Grid Grid.Row="0" Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="txtSearch" Grid.Column="0" Padding="5" TextChanged="txtSearch_TextChanged">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="TextBox">
+                                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                                    <Grid>
+                                                        <TextBlock Text="Hasta ara..." Foreground="Gray" Margin="5,3,0,0" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                        <ScrollViewer x:Name="PART_ContentHost" Margin="5,3,0,0"/>
+                                                    </Grid>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                        <Button Grid.Column="1" Content="🔍" Width="30" BorderThickness="0" Background="Transparent"/>
+                    </Grid>
+
+                    <!-- Filter Options -->
+                    <StackPanel Grid.Row="1" Margin="10,0,10,10">
+                        <TextBlock Text="Kan Şekeri Seviyesi:" FontWeight="SemiBold"/>
+                        <ComboBox x:Name="cmbGlucoseFilter" Margin="0,5,0,0" SelectionChanged="cmbGlucoseFilter_SelectionChanged">
+                            <ComboBoxItem Content="Tümü" IsSelected="True"/>
+                            <ComboBoxItem Content="Düşük (&lt; 70 mg/dL)"/>
+                            <ComboBoxItem Content="Normal (70-110 mg/dL)"/>
+                            <ComboBoxItem Content="Yüksek (111-180 mg/dL)"/>
+                            <ComboBoxItem Content="Çok Yüksek (&gt; 180 mg/dL)"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <!-- Patient List -->
+                    <ListView x:Name="lstPatients" Grid.Row="2" Margin="10,0" BorderThickness="0"
+                              SelectionChanged="lstPatients_SelectionChanged" DisplayMemberPath="FullName">
+                    </ListView>
+
+                    <!-- Add New Patient Button -->
+                    <Button Grid.Row="3" Content="+ Yeni Hasta Ekle" Style="{StaticResource ActionButton}" Margin="10"
+                            Click="btnAddPatient_Click"/>
+                </Grid>
+            </Border>
+
+            <!-- Main Content (Patient Details) -->
+            <TabControl Grid.Column="1" x:Name="tabPatientDetails" Margin="10">
+                <TabItem Header="Genel Bilgiler">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Grid Margin="20">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Patient Info Header -->
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0" Width="80" Height="80" Background="LightGray" CornerRadius="40" Margin="0,0,20,0">
+                                    <TextBlock x:Name="txtPatientInitials" Text="AA" FontSize="30" FontWeight="Bold" 
+                                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock x:Name="txtPatientName" Text="Hasta Adı Soyadı" Style="{StaticResource HeaderText}" Margin="0"/>
+                                    <TextBlock x:Name="txtPatientDetails" Text="TC: 12345678901 | 40 yaş | Erkek" 
+                                             FontSize="14" Foreground="#666666"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Quick Stats -->
+                            <Grid Grid.Row="1" Margin="0,20,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Blood Glucose -->
+                                <Border Grid.Column="0" Background="#E3F2FD" Padding="15" Margin="0,0,10,0" CornerRadius="5">
+                                    <StackPanel>
+                                        <TextBlock Text="Son Kan Şekeri" FontWeight="SemiBold"/>
+                                        <TextBlock x:Name="txtLastGlucose" Text="120 mg/dL" FontSize="22" FontWeight="Bold" Foreground="#2196F3"/>
+                                        <TextBlock x:Name="txtLastGlucoseTime" Text="Bugün 10:25" FontSize="12" Foreground="#666666"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Diet Adherence -->
+                                <Border Grid.Column="1" Background="#E8F5E9" Padding="15" Margin="5,0" CornerRadius="5">
+                                    <StackPanel>
+                                        <TextBlock Text="Diyet Uyumu" FontWeight="SemiBold"/>
+                                        <TextBlock x:Name="txtDietAdherence" Text="%85" FontSize="22" FontWeight="Bold" Foreground="#4CAF50"/>
+                                        <TextBlock Text="Son 30 gün" FontSize="12" Foreground="#666666"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Exercise Adherence -->
+                                <Border Grid.Column="2" Background="#FFF3E0" Padding="15" Margin="10,0,0,0" CornerRadius="5">
+                                    <StackPanel>
+                                        <TextBlock Text="Egzersiz Uyumu" FontWeight="SemiBold"/>
+                                        <TextBlock x:Name="txtExerciseAdherence" Text="%70" FontSize="22" FontWeight="Bold" Foreground="#FF9800"/>
+                                        <TextBlock Text="Son 30 gün" FontSize="12" Foreground="#666666"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <!-- Recent Data -->
+                            <Grid Grid.Row="2" Margin="0,20,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Recent Measurements -->
+                                <TextBlock Grid.Row="0" Text="Son Ölçümler" Style="{StaticResource SubHeaderText}"/>
+                                <DataGrid Grid.Row="1" x:Name="gridRecentMeasurements" AutoGenerateColumns="False" IsReadOnly="True" 
+                                          Margin="0,10,0,20" HeadersVisibility="Column" GridLinesVisibility="Horizontal">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Tarih" Binding="{Binding MeasurementTime, StringFormat={}{0:dd.MM.yyyy}}" Width="100"/>
+                                        <DataGridTextColumn Header="Saat" Binding="{Binding MeasurementTime, StringFormat={}{0:HH:mm}}" Width="80"/>
+                                        <DataGridTextColumn Header="Tür" Binding="{Binding MeasurementType}" Width="100"/>
+                                        <DataGridTextColumn Header="Değer (mg/dL)" Binding="{Binding MeasurementValue}" Width="120"/>
+                                        <DataGridTemplateColumn Header="Durum" Width="120">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="{Binding StatusColor}" CornerRadius="3" Padding="5,2">
+                                                        <TextBlock Text="{Binding StatusText}" Foreground="White" HorizontalAlignment="Center"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                                <!-- Recent Alerts -->
+                                <TextBlock Grid.Row="2" Text="Son Uyarılar" Style="{StaticResource SubHeaderText}"/>
+                                <DataGrid Grid.Row="3" x:Name="gridRecentAlerts" AutoGenerateColumns="False" IsReadOnly="True" 
+                                          Margin="0,10,0,0" HeadersVisibility="Column" GridLinesVisibility="Horizontal">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Tarih" Binding="{Binding CreatedAt, StringFormat={}{0:dd.MM.yyyy HH:mm}}" Width="150"/>
+                                        <DataGridTextColumn Header="Uyarı Tipi" Binding="{Binding AlertType}" Width="150"/>
+                                        <DataGridTextColumn Header="Mesaj" Binding="{Binding AlertMessage}" Width="*"/>
+                                        <DataGridTemplateColumn Header="Durum" Width="100">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding IsReadText}" Foreground="{Binding IsReadColor}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Grid>
+                    </ScrollViewer>
+                </TabItem>
+
+                <TabItem Header="Kan Şekeri Takibi">
+                    <Grid Margin="20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Kan Şekeri Değişim Grafiği" Style="{StaticResource SubHeaderText}"/>
+
+                        <!-- Date Range Filter -->
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,20">
+                            <TextBlock Text="Tarih Aralığı:" VerticalAlignment="Center"/>
+                            <DatePicker x:Name="dpGlucoseStart" Margin="10,0" SelectedDateChanged="dpGlucoseRange_SelectedDateChanged"/>
+                            <TextBlock Text="-" VerticalAlignment="Center"/>
+                            <DatePicker x:Name="dpGlucoseEnd" Margin="10,0" SelectedDateChanged="dpGlucoseRange_SelectedDateChanged"/>
+                            <Button Content="Uygula" Style="{StaticResource ActionButton}" Click="btnApplyGlucoseFilter_Click"/>
+                        </StackPanel>
+                        
+                        <!-- Blood Glucose Input Form -->
+                        <Border Grid.Row="2" Background="#F5F5F5" Padding="15" Margin="0,0,0,20" CornerRadius="5">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                
+                                <TextBlock Grid.Row="0" Text="Kan Şekeri Ölçümü Kaydet" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                                
+                                <Grid Grid.Row="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <!-- İlk Satır -->
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,10">
+                                        <TextBlock Text="Değer (mg/dL)" Margin="0,0,0,5"/>
+                                        <TextBox x:Name="txtGlucoseValue" Width="100" MaxLength="6" PreviewTextInput="NumberValidationTextBox"/>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,10,10">
+                                        <TextBlock Text="Zaman" Margin="0,0,0,5"/>
+                                        <DatePicker x:Name="dpGlucoseDate" Width="120"/>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,10,10">
+                                        <TextBlock Text="Saat" Margin="0,0,0,5"/>
+                                        <TextBox x:Name="txtGlucoseTime" Width="80" Text="12:00"/>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Grid.Row="0" Grid.Column="3" Margin="0,0,10,10">
+                                        <TextBlock Text="Ölçüm Türü" Margin="0,0,0,5"/>
+                                        <ComboBox x:Name="cmbMeasurementType" Width="120">
+                                            <ComboBoxItem Content="Sabah" Tag="Morning"/>
+                                            <ComboBoxItem Content="Öğle" Tag="Noon"/>
+                                            <ComboBoxItem Content="İkindi" Tag="Afternoon"/>
+                                            <ComboBoxItem Content="Akşam" Tag="Evening"/>
+                                            <ComboBoxItem Content="Gece" Tag="Night"/>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    
+                                    <!-- İkinci Satır -->
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,0">
+                                        <TextBlock Text="İnsülin Dozu (ml)" Margin="0,0,0,5"/>
+                                        <TextBox x:Name="txtInsulinDose" Width="100" MaxLength="5" PreviewTextInput="NumberValidationTextBox"/>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,10,0">
+                                        <TextBlock Text="Notlar" Margin="0,0,0,5"/>
+                                        <TextBox x:Name="txtGlucoseNotes" Width="210"/>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Grid.Row="1" Grid.Column="3" Margin="0,0,10,0" HorizontalAlignment="Right">
+                                        <TextBlock Text=" " Margin="0,0,0,5" Visibility="Hidden"/>
+                                        <Button x:Name="btnSaveGlucose" Content="Kaydet" Width="100" Height="30"
+                                                Style="{StaticResource ActionButton}" 
+                                                Click="btnSaveGlucose_Click"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </Border>
+
+                        <!-- Blood Glucose Chart -->
+                        <Grid Grid.Row="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- The Chart -->
+                            <lvc:CartesianChart x:Name="chartBloodGlucose" Grid.Row="0" Series="{Binding GlucoseSeries}" 
+                                              LegendLocation="Right" DisableAnimations="True">
+                                <lvc:CartesianChart.AxisX>
+                                    <lvc:Axis Title="Tarih/Saat" LabelFormatter="{Binding DateTimeFormatter}"/>
+                                </lvc:CartesianChart.AxisX>
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis Title="Kan Şekeri (mg/dL)" MinValue="0">
+                                        <lvc:Axis.Sections>
+                                            <!-- Color-coded sections for glucose levels -->
+                                            <lvc:AxisSection Value="0" SectionWidth="70" Fill="#FFE8E8" />
+                                            <lvc:AxisSection Value="70" SectionWidth="40" Fill="#E8F5E8" />
+                                            <lvc:AxisSection Value="110" SectionWidth="70" Fill="#FFF7E6" />
+                                            <lvc:AxisSection Value="180" SectionWidth="120" Fill="#FFDED6" />
+                                        </lvc:Axis.Sections>
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisY>
+                            </lvc:CartesianChart>
+                            
+                            <!-- Legend for glucose levels -->
+                            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                                <Border Background="#FFE8E8" CornerRadius="3" Padding="5,2" Margin="5,0">
+                                    <TextBlock Text="Düşük (&lt; 70 mg/dL)" />
+                                </Border>
+                                <Border Background="#E8F5E8" CornerRadius="3" Padding="5,2" Margin="5,0">
+                                    <TextBlock Text="Normal (70-110 mg/dL)" />
+                                </Border>
+                                <Border Background="#FFF7E6" CornerRadius="3" Padding="5,2" Margin="5,0">
+                                    <TextBlock Text="Yüksek (111-180 mg/dL)" />
+                                </Border>
+                                <Border Background="#FFDED6" CornerRadius="3" Padding="5,2" Margin="5,0">
+                                    <TextBlock Text="Çok Yüksek (&gt; 180 mg/dL)" />
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Diyet ve Egzersiz">
+                    <Grid Margin="20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Diet Section -->
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Diyet Planı" Style="{StaticResource SubHeaderText}"/>
+                            <Button Grid.Column="1" Content="Yeni Diyet Planı" Style="{StaticResource ActionButton}" 
+                                  Click="btnAddDiet_Click"/>
+                        </Grid>
+                        
+                        <Grid Grid.Row="1" x:Name="gridDietPlans" Margin="0,10,0,20" Visibility="Visible">
+                            <DataGrid x:Name="dgDietPlans" AutoGenerateColumns="False" IsReadOnly="True" 
+                                    HeadersVisibility="Column" GridLinesVisibility="Horizontal">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Başlangıç" Binding="{Binding StartDate, StringFormat={}{0:dd.MM.yyyy}}" Width="100"/>
+                                    <DataGridTextColumn Header="Bitiş" Binding="{Binding EndDateDisplay}" Width="100"/>
+                                    <DataGridTextColumn Header="Diyet Türü" Binding="{Binding DietTypeDisplay}" Width="150"/>
+                                    <DataGridTextColumn Header="Doktor Notu" Binding="{Binding DoctorNotes}" Width="*"/>
+                                    <DataGridTemplateColumn Header="İşlemler" Width="100">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="Düzenle" Click="btnEditDiet_Click" Tag="{Binding Id}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                        
+                        <!-- Add Diet Plan Panel -->
+                        <Grid Grid.Row="1" x:Name="panelAddDiet" Visibility="Collapsed" Margin="0,10,0,20">
+                            <Border Background="#F5F5F5" Padding="20" CornerRadius="5">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
+                                             Text="Yeni Diyet Planı" FontWeight="Bold" FontSize="16" Margin="0,0,0,15"/>
+                                    
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Diyet Türü:" VerticalAlignment="Center"/>
+                                    <ComboBox Grid.Row="1" Grid.Column="1" x:Name="cmbDietType" Margin="0,5,0,10" Width="250" HorizontalAlignment="Left">
+                                        <ComboBoxItem Content="Az Şekerli Diyet" Tag="0" ToolTip="Şekerli gıdalar sınırlanır, kompleks karbonhidratlara öncelik verilir. Lifli gıdalar ve düşük glisemik indeksli besinler tercih edilir."/>
+                                        <ComboBoxItem Content="Şekersiz Diyet" Tag="1" ToolTip="Rafine şeker ve şeker katkılı tüm ürünler tamamen dışlanır. Hiperglisemi riski taşıyan bireylerde önerilir."/>
+                                        <ComboBoxItem Content="Dengeli Beslenme" Tag="2" ToolTip="Diyabetli bireylerin yaşam tarzına uygun, dengeli ve sürdürülebilir bir diyet yaklaşımıdır. Tüm besin gruplarından yeterli miktarda alınır; porsiyon kontrolü, mevsimsel taze ürünler ve su tüketimi temel unsurlardır."/>
+                                    </ComboBox>
+                                    
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Başlangıç Tarihi:" VerticalAlignment="Center"/>
+                                    <DatePicker Grid.Row="2" Grid.Column="1" x:Name="dpDietStartDate" Margin="0,5,0,10" Width="150" HorizontalAlignment="Left"/>
+                                    
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Bitiş Tarihi:" VerticalAlignment="Center"/>
+                                    <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="0,5,0,10">
+                                        <DatePicker x:Name="dpDietEndDate" Width="150"/>
+                                        <TextBlock Text="(Boş bırakılırsa süresiz olarak kabul edilir)" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="#555"/>
+                                    </StackPanel>
+                                    
+                                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Doktor Notu:" VerticalAlignment="Top" Margin="0,5,0,0"/>
+                                    <TextBox Grid.Row="4" Grid.Column="1" x:Name="txtDietNotes" Margin="0,5,0,0" 
+                                           Height="80" TextWrapping="Wrap" AcceptsReturn="True"/>
+                                    
+                                    <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+                                        <Button Content="İptal" Padding="15,8" Margin="0,0,10,0" Click="btnCancelDiet_Click"/>
+                                        <Button Content="Kaydet" Style="{StaticResource ActionButton}" Click="btnSaveDiet_Click"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </Grid>
+
+                        <!-- Exercise Section -->
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Egzersiz Planı" Style="{StaticResource SubHeaderText}"/>
+                            <Button Grid.Column="1" Content="Yeni Egzersiz Planı" Style="{StaticResource ActionButton}" 
+                                  Click="btnAddExercise_Click"/>
+                        </Grid>
+                        
+                        <Grid Grid.Row="3" x:Name="gridExercisePlans" Margin="0,10,0,0" Visibility="Visible">
+                            <DataGrid x:Name="dgExercisePlans" AutoGenerateColumns="False" IsReadOnly="True" 
+                                    HeadersVisibility="Column" GridLinesVisibility="Horizontal">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Başlangıç" Binding="{Binding StartDate, StringFormat={}{0:dd.MM.yyyy}}" Width="100"/>
+                                    <DataGridTextColumn Header="Bitiş" Binding="{Binding EndDateDisplay}" Width="100"/>
+                                    <DataGridTextColumn Header="Egzersiz Türü" Binding="{Binding ExerciseTypeDisplay}" Width="150"/>
+                                    <DataGridTextColumn Header="Doktor Notu" Binding="{Binding DoctorNotes}" Width="*"/>
+                                    <DataGridTemplateColumn Header="İşlemler" Width="100">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="Düzenle" Click="btnEditExercise_Click" Tag="{Binding Id}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                        
+                        <!-- Add Exercise Plan Panel -->
+                        <Grid Grid.Row="3" x:Name="panelAddExercise" Visibility="Collapsed" Margin="0,10,0,0">
+                            <Border Background="#F5F5F5" Padding="20" CornerRadius="5">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
+                                             Text="Yeni Egzersiz Planı" FontWeight="Bold" FontSize="16" Margin="0,0,0,15"/>
+                                    
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Egzersiz Türü:" VerticalAlignment="Center"/>
+                                    <ComboBox Grid.Row="1" Grid.Column="1" x:Name="cmbExerciseType" Margin="0,5,0,10" Width="250" HorizontalAlignment="Left">
+                                        <ComboBoxItem Content="Yürüyüş" Tag="0" ToolTip="Hafif tempolu, günlük yapılabilecek bir egzersizdir."/>
+                                        <ComboBoxItem Content="Bisiklet" Tag="1" ToolTip="Alt vücut kaslarını çalıştırır ve dış mekanda veya sabit bisikletle uygulanabilir."/>
+                                        <ComboBoxItem Content="Klinik Egzersiz" Tag="2" ToolTip="Doktor tarafından verilen belirli hareketleri içeren planlı egzersizlerdir. Stresi azaltılması ve hareket kabiliyetinin artırılması amaçlanır."/>
+                                    </ComboBox>
+                                    
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Başlangıç Tarihi:" VerticalAlignment="Center"/>
+                                    <DatePicker Grid.Row="2" Grid.Column="1" x:Name="dpExerciseStartDate" Margin="0,5,0,10" Width="150" HorizontalAlignment="Left"/>
+                                    
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Bitiş Tarihi:" VerticalAlignment="Center"/>
+                                    <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="0,5,0,10">
+                                        <DatePicker x:Name="dpExerciseEndDate" Width="150"/>
+                                        <TextBlock Text="(Boş bırakılırsa süresiz olarak kabul edilir)" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="#555"/>
+                                    </StackPanel>
+                                    
+                                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Doktor Notu:" VerticalAlignment="Top" Margin="0,5,0,0"/>
+                                    <TextBox Grid.Row="4" Grid.Column="1" x:Name="txtExerciseNotes" Margin="0,5,0,0" 
+                                           Height="80" TextWrapping="Wrap" AcceptsReturn="True"/>
+                                    
+                                    <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+                                        <Button Content="İptal" Padding="15,8" Margin="0,0,10,0" Click="btnCancelExercise_Click"/>
+                                        <Button Content="Kaydet" Style="{StaticResource ActionButton}" Click="btnSaveExercise_Click"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Semptomlar">
+                    <Grid Margin="20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Semptom Geçmişi" Style="{StaticResource SubHeaderText}"/>
+
+                        <!-- Date Range Filter -->
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,20">
+                            <TextBlock Text="Tarih Aralığı:" VerticalAlignment="Center"/>
+                            <DatePicker x:Name="dpSymptomsStart" Margin="10,0" SelectedDateChanged="dpSymptomsRange_SelectedDateChanged"/>
+                            <TextBlock Text="-" VerticalAlignment="Center"/>
+                            <DatePicker x:Name="dpSymptomsEnd" Margin="10,0" SelectedDateChanged="dpSymptomsRange_SelectedDateChanged"/>
+                            <Button Content="Uygula" Style="{StaticResource ActionButton}" Click="btnApplySymptomsFilter_Click"/>
+                            <Button Content="Yeni Semptom Ekle" Style="{StaticResource ActionButton}" Click="btnAddDoctorSymptom_Click" Margin="20,0,0,0"/>
+                        </StackPanel>
+
+                        <!-- Add Symptom Panel -->
+                        <Grid Grid.Row="2" x:Name="panelAddDoctorSymptom" Visibility="Collapsed" Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Semptom Tarihi:" VerticalAlignment="Center"/>
+                            <DatePicker Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" x:Name="dpDoctorSymptomDate" 
+                                        Margin="0,5,0,10" HorizontalAlignment="Left" Width="150"/>
+                            
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Semptom Tipi:" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="Şiddet:" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="Notlar:" VerticalAlignment="Center"/>
+                            
+                            <ComboBox Grid.Row="2" Grid.Column="0" x:Name="cmbDoctorSymptomType" Margin="0,5,10,5"
+                                     SelectionChanged="DoctorSymptomTypeSelectionChanged">
+                                <ComboBoxItem Content="Poliüri (Sık idrara çıkma)"/>
+                                <ComboBoxItem Content="Polifaji (Aşırı açlık hissi)"/>
+                                <ComboBoxItem Content="Polidipsi (Aşırı susama hissi)"/>
+                                <ComboBoxItem Content="Nöropati"/>
+                                <ComboBoxItem Content="Kilo kaybı"/>
+                                <ComboBoxItem Content="Yorgunluk"/>
+                                <ComboBoxItem Content="Yaraların yavaş iyileşmesi"/>
+                                <ComboBoxItem Content="Bulanık görme"/>
+                            </ComboBox>
+                            
+                            <ComboBox Grid.Row="2" Grid.Column="1" x:Name="cmbDoctorSymptomIntensity" Margin="0,5,10,5"
+                                     SelectionChanged="DoctorSymptomIntensitySelectionChanged">
+                                <ComboBoxItem Content="Hafif (1)" Tag="1"/>
+                                <ComboBoxItem Content="Orta (2)" Tag="2"/>
+                                <ComboBoxItem Content="Şiddetli (3)" Tag="3"/>
+                                <ComboBoxItem Content="Çok Şiddetli (4)" Tag="4"/>
+                                <ComboBoxItem Content="Dayanılmaz (5)" Tag="5"/>
+                            </ComboBox>
+                            
+                            <TextBox Grid.Row="2" Grid.Column="2" x:Name="txtDoctorSymptomNotes" Margin="0,5,10,5" />
+                            
+                            <StackPanel Grid.Row="2" Grid.Column="3" Orientation="Horizontal">
+                                <Button Content="Kaydet" Style="{StaticResource ActionButton}" Margin="0,5,5,5"
+                                        Click="btnSaveDoctorSymptom_Click"/>
+                                <Button Content="İptal" Style="{StaticResource ActionButton}" Margin="5,5,0,5"
+                                        Click="btnCancelDoctorSymptom_Click"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <DataGrid Grid.Row="2" x:Name="gridSymptoms" AutoGenerateColumns="False" IsReadOnly="True" 
+                                Margin="0,10,0,0" HeadersVisibility="Column" GridLinesVisibility="Horizontal">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Tarih" Binding="{Binding SymptomDate, StringFormat={}{0:dd.MM.yyyy}}" Width="100"/>
+                                <DataGridTextColumn Header="Semptom" Binding="{Binding SymptomDisplay}" Width="150"/>
+                                <DataGridTextColumn Header="Şiddet" Binding="{Binding Intensity}" Width="80"/>
+                                <DataGridTextColumn Header="Notlar" Binding="{Binding Notes}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Uyarılar">
+                    <Grid Margin="20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Tüm Uyarılar" Style="{StaticResource SubHeaderText}"/>
+
+                        <!-- Filter Options -->
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,20">
+                            <TextBlock Text="Göster:" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="cmbAlertFilter" Width="150" Margin="10,0" 
+                                    SelectionChanged="cmbAlertFilter_SelectionChanged">
+                                <ComboBoxItem Content="Tüm Uyarılar" IsSelected="True"/>
+                                <ComboBoxItem Content="Okunmamış Uyarılar"/>
+                                <ComboBoxItem Content="Acil Uyarılar"/>
+                            </ComboBox>
+                            <Button Content="Tümünü Okundu İşaretle" Style="{StaticResource ActionButton}" 
+                                  Click="btnMarkAllAlertsRead_Click"/>
+                        </StackPanel>
+
+                        <DataGrid Grid.Row="2" x:Name="gridAllAlerts" AutoGenerateColumns="False" IsReadOnly="True" 
+                                Margin="0,10,0,0" HeadersVisibility="Column" GridLinesVisibility="Horizontal">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Tarih" Binding="{Binding CreatedAt, StringFormat={}{0:dd.MM.yyyy HH:mm}}" Width="150"/>
+                                <DataGridTextColumn Header="Uyarı Tipi" Binding="{Binding AlertType}" Width="150"/>
+                                <DataGridTextColumn Header="Mesaj" Binding="{Binding AlertMessage}" Width="*"/>
+                                <DataGridTemplateColumn Header="Durum" Width="100">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding IsReadText}" Foreground="{Binding IsReadColor}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="İşlem" Width="100">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Okundu" Click="btnMarkAlertRead_Click" Tag="{Binding Id}" 
+                                                  Visibility="{Binding IsReadButtonVisibility}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+                
+                <TabItem Header="🎯 Hasta Önerileri">
+                    <Grid Margin="20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        
+                        <TextBlock Grid.Row="0" Text="Akıllı Sağlık Önerileri" Style="{StaticResource HeaderText}"/>
+                        
+                        <!-- Patient Selection -->
+                        <Grid Grid.Row="1" Margin="0,10,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Grid.Column="0" Text="Hasta:" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                            <ComboBox Grid.Column="1" x:Name="cmbRecommendationPatient" Margin="10,0" 
+                                     DisplayMemberPath="FullName" SelectedValuePath="Id"
+                                     SelectionChanged="cmbRecommendationPatient_SelectionChanged"/>
+                            <Button Grid.Column="2" x:Name="btnRefreshDoctorRecommendations" Content="🔄 Önerileri Yenile" 
+                                    Style="{StaticResource ActionButton}" Click="btnRefreshDoctorRecommendations_Click" Margin="10,0"/>
+                            <TextBlock Grid.Column="3" x:Name="txtRecommendationsLastUpdated" Text="Son güncelleme: --" 
+                                       VerticalAlignment="Center" FontStyle="Italic"/>
+                        </Grid>
+                        
+                        <!-- Patient Info Summary -->
+                        <Border Grid.Row="2" Background="#F8F9FA" Padding="15" Margin="0,0,0,20" CornerRadius="5" 
+                                x:Name="panelRecommendationPatientInfo" Visibility="Collapsed">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Son Ölçüm" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="txtRecommendationLastGlucose" Text="--" FontSize="18" Foreground="#2196F3"/>
+                                </StackPanel>
+                                
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="Günlük Ortalama" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="txtRecommendationDailyAvg" Text="--" FontSize="18" Foreground="#4CAF50"/>
+                                </StackPanel>
+                                
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Toplam Ölçüm" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="txtRecommendationTotalMeasurements" Text="--" FontSize="18" Foreground="#FF9800"/>
+                                </StackPanel>
+                                
+                                <StackPanel Grid.Column="3">
+                                    <TextBlock Text="Risk Seviyesi" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="txtRecommendationRiskLevel" Text="--" FontSize="18" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        
+                        <!-- Recommendations List -->
+                        <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto" 
+                                      x:Name="scrollRecommendations" Visibility="Collapsed">
+                            <ItemsControl x:Name="lstDoctorRecommendations">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Margin="0,0,0,15" CornerRadius="8" Padding="15" 
+                                                Background="{Binding PriorityBrush}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                
+                                                <!-- Header -->
+                                                <Grid Grid.Row="0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    
+                                                    <TextBlock Grid.Column="0" Text="{Binding Title}" 
+                                                               FontWeight="Bold" FontSize="16" Foreground="White"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding Category}" 
+                                                               FontSize="12" Foreground="White" FontStyle="Italic" Margin="10,0"/>
+                                                    <Border Grid.Column="2" Background="#000000" Padding="5,2" CornerRadius="3">
+                                                        <TextBlock Text="{Binding PriorityText}" 
+                                                                   FontSize="12" FontWeight="Bold" Foreground="White"/>
+                                                    </Border>
+                                                </Grid>
+                                                
+                                                <!-- Message -->
+                                                <TextBlock Grid.Row="1" Text="{Binding Message}" 
+                                                           Margin="0,8,0,10" TextWrapping="Wrap" Foreground="White"/>
+                                                
+                                                <!-- Actions -->
+                                                <TextBlock Grid.Row="2" Text="Önerilen Aksiyonlar:" 
+                                                           FontWeight="SemiBold" Foreground="White" Margin="0,0,0,5"
+                                                           Visibility="{Binding HasActions, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                <ItemsControl Grid.Row="3" ItemsSource="{Binding Actions}" 
+                                                              Visibility="{Binding HasActions, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding ., StringFormat='• {0}'}" 
+                                                                       Margin="10,2,0,2" Foreground="White" FontSize="12"/>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                                
+                                                <!-- Timestamp -->
+                                                <TextBlock Grid.Row="4" Text="{Binding CreatedAt, StringFormat='Oluşturulma: {0:dd.MM.yyyy HH:mm}'}" 
+                                                           Margin="0,10,0,0" FontSize="10" Foreground="White" HorizontalAlignment="Right"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                        
+                        <!-- Empty State -->
+                        <Grid Grid.Row="3" x:Name="panelEmptyRecommendations" Visibility="Visible">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="🎯" FontSize="64" HorizontalAlignment="Center" Opacity="0.3"/>
+                                <TextBlock Text="Hasta Seçin" FontSize="18" FontWeight="SemiBold" 
+                                           HorizontalAlignment="Center" Margin="0,10,0,0" Foreground="#999"/>
+                                <TextBlock Text="Sol taraftan hasta seçerek önerilerini görüntüleyin" 
+                                           HorizontalAlignment="Center" Margin="0,5,0,0" Foreground="#999"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                
+                <!-- Profil Tab -->
+                <TabItem Header="Profil">
+                    <Grid Margin="20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        
+                        <TextBlock Grid.Row="0" Text="Hesap Bilgilerim" Style="{StaticResource HeaderText}"/>
+                        
+                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                            <StackPanel Width="500" HorizontalAlignment="Left">
+                                <!-- Basic Info -->
+                                <Border Background="#F5F5F5" Padding="20" Margin="0,0,0,20" CornerRadius="5">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="TC Kimlik No:" FontWeight="SemiBold"/>
+                                        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="txtDoctorProfileTcId" Text="12345678901"/>
+                                        
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Ad Soyad:" FontWeight="SemiBold" Margin="0,10,0,0"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="txtDoctorProfileName" Text="Ad Soyad" Margin="0,10,0,0"/>
+                                        
+                                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Doğum Tarihi:" FontWeight="SemiBold" Margin="0,10,0,0"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="1" x:Name="txtDoctorProfileBirthDate" Text="01.01.1980" Margin="0,10,0,0"/>
+                                        
+                                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Cinsiyet:" FontWeight="SemiBold" Margin="0,10,0,0"/>
+                                        <TextBlock Grid.Row="3" Grid.Column="1" x:Name="txtDoctorProfileGender" Text="Erkek" Margin="0,10,0,0"/>
+                                        
+                                        <TextBlock Grid.Row="4" Grid.Column="0" Text="E-posta:" FontWeight="SemiBold" Margin="0,10,0,0"/>
+                                        <TextBlock Grid.Row="4" Grid.Column="1" x:Name="txtDoctorProfileEmail" Text="doktor@example.com" Margin="0,10,0,0"/>
+                                    </Grid>
+                                </Border>
+                                
+                                <!-- Profile Picture -->
+                                <TextBlock Text="Profil Resmi" Style="{StaticResource SubHeaderText}"/>
+                                
+                                <Border Background="#F5F5F5" Padding="20" Margin="0,10,0,20" CornerRadius="5">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        
+                                        <!-- Profile Image Display -->
+                                        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Width="150" Height="150" 
+                                                Background="LightGray" CornerRadius="75" Margin="0,0,0,15" HorizontalAlignment="Center">
+                                            <Image x:Name="imgDoctorProfilePicture" Stretch="UniformToFill"/>
+                                        </Border>
+                                        
+                                        <!-- Upload Button -->
+                                        <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="Profil Resmi Yükle" 
+                                                HorizontalAlignment="Center" Style="{StaticResource ActionButton}"
+                                                Click="btnUploadDoctorProfilePicture_Click"/>
+                                    </Grid>
+                                </Border>
+                                
+                                <!-- Password Change -->
+                                <TextBlock Text="Şifre Değiştir" Style="{StaticResource SubHeaderText}"/>
+                                
+                                <Grid Margin="0,10,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Mevcut Şifre:" Margin="0,5,10,5"/>
+                                    <PasswordBox Grid.Row="0" Grid.Column="1" x:Name="txtDoctorCurrentPassword" Margin="10,5,0,5"/>
+                                    
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Yeni Şifre:" Margin="0,5,10,5"/>
+                                    <PasswordBox Grid.Row="1" Grid.Column="1" x:Name="txtDoctorNewPassword" Margin="10,5,0,5"/>
+                                    
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Yeni Şifre (Tekrar):" Margin="0,5,10,5"/>
+                                    <PasswordBox Grid.Row="2" Grid.Column="1" x:Name="txtDoctorConfirmPassword" Margin="10,5,0,5"/>
+                                </Grid>
+                                
+                                <Button Content="Şifreyi Değiştir" Style="{StaticResource ActionButton}" 
+                                       HorizontalAlignment="Right" Margin="0,10,0,0" Click="btnChangeDoctorPassword_Click"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</Window> 
