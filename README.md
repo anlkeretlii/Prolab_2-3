@@ -52,4 +52,14 @@ Uygulama, servis tabanlı bir mimariye sahiptir. Her bir işlevsellik için ayr�
 - 🩺 **SymptomService**: Semptom kaydı ve analizi
 
 ### 📸 Ekran Görüntüleri
-*[Uygulama ekran görüntüleri burada olacak]*
+![image](https://github.com/user-attachments/assets/3defa83e-5e28-4e6a-b39f-11487c6b3c8a)
+
+![image](https://github.com/user-attachments/assets/18d6b76d-5812-4efc-9b68-717d494dcf33)
+
+![image](https://github.com/user-attachments/assets/a0f06ceb-1b4b-43c2-976c-4bc380110c5d)
+
+![image](https://github.com/user-attachments/assets/bbdfa0c1-c293-4d43-8bb5-683c29e45033)
+
+
+
+
